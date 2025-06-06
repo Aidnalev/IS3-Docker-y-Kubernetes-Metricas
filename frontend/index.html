@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Mi API</title>
+</head>
+<body>
+  <h1>¡API en funcionamiento!</h1>
+  <p>Consulta los datos desde el backend usando fetch.</p>
+
+  <div id="output">Cargando datos...</div>
+
+<script>
+  fetch('/posts/latest') // Ya no usas http://api:5000
+    .then(response => response.json())
+    .then(data => {
+      const output = document.getElementById('output');
+      output.innerHTML = "<h2>Últimos posts:</h2><ul>" +
+        data.map(post => `<li><strong>${post.title}</strong> por ${post.author}</li>`).join('') +
+        "</ul>";
+    })
+    .catch(error => {
+      console.error('Error al obtener los datos:', error);
+      document.getElementById('output').textContent = 'Error al cargar datos.';
+    });
+</script>
+
+</body>
+</html>
+
