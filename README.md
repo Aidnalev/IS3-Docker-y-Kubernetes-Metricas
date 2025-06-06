@@ -1,29 +1,125 @@
-# MongoDB and Express.js REST API sample application
+# Análisis de Desempeño y Despliegue de Aplicación Full-Stack
 
-This repository contains the sample application for the [MongoDB and Express.js REST API tutorial](https://www.mongodb.com/languages/express-mongodb-rest-api-tutorial).
+## Autores
 
-## How To Run
+- Miguel Daniel Velandia Pinilla - 2182073  
+- Juan Daniel Suarez Jaimes - 2182043  
+- Juan Sebastian Espinosa Espinosa - 2183184  
 
-1. You can follow the [Getting Started with Atlas](https://docs.atlas.mongodb.com/getting-started/) guide, to learn how to create a free Atlas account, create your first cluster and get your Connection String to the database.
-Then, set the Atlas URI connection parameter in `server/.env` to your Connection String:
+---
+
+## 📌 Descripción
+
+Este proyecto documenta el análisis de rendimiento de una aplicación full-stack bajo distintos escenarios de despliegue. Se evaluó el comportamiento de la aplicación usando pruebas de carga con Apache JMeter, analizando métricas como el tiempo de respuesta y throughput.
+
+---
+
+## 🛠️ Tecnologías Usadas
+
+- Node.js + Express (backend)
+- MongoDB Atlas (base de datos)
+- Nginx (servidor estático para el frontend)
+- Docker & Docker Compose
+- Kubernetes (Minikube)
+- Python (análisis de datos con pandas, matplotlib, seaborn)
+- Apache JMeter (pruebas de carga)
+
+---
+
+## 📦 Escenarios de Despliegue
+
+### Escenario 1: Docker + Docker Compose
+
+- Backend y frontend en contenedores separados
+- Comunicación interna entre servicios
+- Conexión a MongoDB Atlas mediante variable de entorno
+- Despliegue rápido y replicable
+
+### Escenario 2: Kubernetes (1 nodo)
+
+- Cluster con Minikube y diferentes réplicas (1, 2, 3)
+- Servicios expuestos como `ClusterIP` y `NodePort`
+- Evaluación del rendimiento bajo escalado horizontal
+
+### Escenario 3: Kubernetes (2 nodos)
+
+- Despliegue distribuido con múltiples réplicas
+- Evaluación de desempeño distribuido y latencia entre nodos
+
+---
+
+## 📈 Métricas Evaluadas
+
+- **Tiempo Medio de Respuesta** (`elapsed`)
+- **Throughput Promedio** (peticiones/segundo)
+- **Escalabilidad Horizontal**
+
+---
+
+## 🔍 Análisis
+
+- **Escenario más eficiente:** Docker Compose (Escenario 1)
+- **Cuellos de botella identificados:**
+  - Latencia de red (acceso a MongoDB Atlas)
+  - Carga sobre CPU en entornos con pocos recursos
+- **Recomendación:** Escalar horizontalmente, asegurando que la base de datos también pueda escalar para evitar cuellos de botella.
+
+---
+
+## ▶️ Cómo Ejecutar el Proyecto
+
+### Escenario 1
+
+```bash
+docker-compose up --build -d
 ```
-ATLAS_URI=mongodb+srv://<username>:<password>@sandbox.jadwj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
+Acceder a:
+
+- Frontend: [http://localhost:8080](http://localhost:8080)
+- Backend: [http://localhost:5000/posts](http://localhost:5000/posts)
+
+### Escenario 2
+
+```bash
+minikube start --driver=docker
+kubectl apply -f k8s/
+minikube service frontend-service
 ```
 
-2. Start the Express server:
+---
+
+## 📊 Visualización de Datos
+
+Se utilizaron notebooks de Google Colab para procesar y graficar los datos recolectados desde Apache JMeter. Las gráficas incluyen:
+
+- Tiempo medio de respuesta por escenario y número de réplicas
+- Throughput a lo largo del tiempo
+
+---
+
+## 📁 Estructura del Proyecto
+
 ```
-cd server
-npm install
-npm run dev
+ProyectoFinal/
+├── frontend/
+│   └── Dockerfile
+├── server/
+│   └── Dockerfile
+├── k8s/
+│   ├── backend-deployment.yaml
+│   ├── backend-service.yaml
+│   ├── frontend-deployment.yaml
+│   └── frontend-service.yaml
+├── .env
+├── docker-compose.yml
+└── ProyectoPrincipios.ipynb
 ```
 
-3. Start the React app (in a new terminal window):
-```
-cd app
-npm install
-npm start
-```
+---
 
-## Disclaimer
+## 📎 Enlace al Notebook
 
-Use at your own risk; not a supported MongoDB product
+[Notebook en Google Colab](https://colab.research.google.com/drive/1yXstx0xEaCl90NRAUvnOpCwbkcINXxTd?usp=sharing)
+
+---
